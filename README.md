@@ -2,6 +2,8 @@
 
 Simple addon that allows content to be hidden on scrolling down and reappering on scrolling up. (By toggling a class).
 
+DEMO: https://martinmalinda.github.io/ember-hiding-menu/
+
 ## 1) Install the addon
 
 ```
