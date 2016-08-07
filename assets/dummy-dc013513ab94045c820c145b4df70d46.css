@@ -1,0 +1,1 @@
+.hiding-menu{position:fixed;top:0;width:100vw;transition:.3s transform;height:100px;background:#fff;line-height:100px;vertical-align:middle}.hiding-menu.hidden{transform:translateY(-100%)}.hiding-menu.bottom{top:auto;bottom:0}.hiding-menu.bottom.hidden{transform:translateY(100%)}
