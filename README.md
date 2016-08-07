@@ -1,26 +1,27 @@
 # Ember-hiding-menu
 
-This README outlines the details of collaborating on this Ember addon.
+Simple addon that allows content to be hidden on scrolling down and reappering on scrolling up. (By toggling a class).
 
-## Installation
+## 1) Install the addon
 
-* `git clone` this repository
-* `npm install`
-* `bower install`
+```
+ember install ember-hiding-menu
+```
 
-## Running
+## 2) Import SCSS
 
-* `ember serve`
-* Visit your app at http://localhost:4200.
+```css
+@import 'hiding-menu';
+```
 
-## Running Tests
+## 3) Use it
 
-* `npm test` (Runs `ember try:testall` to test your addon against multiple Ember versions)
-* `ember test`
-* `ember test --server`
+```hbs
+{{#hiding-menu throttleTime=200 topTolerance=50 class="my-menu"}}
+  {{link-to "somewhere"}}
+{{/hiding-menu}}
 
-## Building
-
-* `ember build`
-
-For more information on using ember-cli, visit [http://ember-cli.com/](http://ember-cli.com/).
+{{#hiding-menu class="bottom"}}
+  This menu is fixed on bottom.
+{{/hiding-menu}}
+```
