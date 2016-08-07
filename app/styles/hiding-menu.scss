@@ -1,0 +1,20 @@
+.hiding-menu {
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  transition: 0.3s transform;
+
+
+  &.hidden {
+    transform: translateY(-100%);
+  }
+
+  &.bottom {
+    top: auto;
+    bottom: 0;
+
+    &.hidden {
+      transform: translateY(100%);
+    }
+  }
+}
