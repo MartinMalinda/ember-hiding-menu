@@ -1,6 +1,6 @@
 # Ember-hiding-menu
 
-Simple addon that allows content to be hidden on scrolling down and reappering on scrolling up. (By toggling a class).
+Simple addon that allows content to be hidden on scrolling down and reappear on scrolling up. (By toggling a class).
 
 DEMO: https://martinmalinda.github.io/ember-hiding-menu/
 
