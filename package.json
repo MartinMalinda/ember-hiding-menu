@@ -1,7 +1,7 @@
 {
   "name": "ember-hiding-menu",
   "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "description": "Ember addon which adds functionality to toggle class on scroll down",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -11,7 +11,7 @@
     "start": "ember server",
     "test": "ember try:each"
   },
-  "repository": "",
+  "repository": "https://github.com/MartinMalinda/ember-hiding-menu",
   "engines": {
     "node": ">= 0.10.0"
   },
