@@ -28,11 +28,20 @@ test('test hiding', function(assert) {
 
     animateScroll(0);
     andThen(function(){
-      animateScroll(40).then(() => {
+      return animateScroll(40).then(() => {
         assert.equal($menu.hasClass('hidden'), false);  
       });
 
     })
+  })
+
+  andThen(function(){
+    return animateScroll(200);
+  })
+
+  andThen(function(){
+      let $menu = $('.hiding-menu');
+        assert.equal($menu.hasClass('hidden'), true);  
   })
 
 });
