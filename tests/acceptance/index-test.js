@@ -22,17 +22,17 @@ test('test hiding', function(assert) {
 
   });
 
-    andThen(function(){
+  andThen(function(){
 
     let $menu = $('.hiding-menu');
 
-        animateScroll(0);
-      andThen(function(){
-        animateScroll(40).then(() => {
-          assert.equal($menu.hasClass('hidden'), false);  
-        });
+    animateScroll(0);
+    andThen(function(){
+      animateScroll(40).then(() => {
+        assert.equal($menu.hasClass('hidden'), false);  
+      });
 
-      })
     })
+  })
 
 });
