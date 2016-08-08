@@ -32,16 +32,16 @@ test('test hiding', function(assert) {
         assert.equal($menu.hasClass('hidden'), false);  
       });
 
-    })
-  })
+    });
+  });
 
   andThen(function(){
     return animateScroll(200);
-  })
+  });
 
   andThen(function(){
       let $menu = $('.hiding-menu');
         assert.equal($menu.hasClass('hidden'), true);  
-  })
+  });
 
 });
