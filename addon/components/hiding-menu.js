@@ -19,6 +19,10 @@ export default Ember.Component.extend({
     this.setupScrollMenuToggle();
   },
 
+  willDestroyElement(){
+    $(window).off(`scroll.${this.get('elementId')}`);
+  },
+
   setupScrollMenuToggle(){
     let $document = $(document);
     let $el = $(this.element);
