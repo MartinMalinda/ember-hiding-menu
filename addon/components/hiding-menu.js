@@ -20,20 +20,20 @@ export default Ember.Component.extend({
   },
 
   setupScrollMenuToggle(){
-    let $body = $('body');
+    let $document = $(document);
     let $el = $(this.element);
     let $menu = $el;
     this.set('menuHeight', $menu.outerHeight());
 
     $(window).on(`scroll.${this.get('elementId')}`, event => {
-      run.throttle(this, () => this.onScroll(event, $body), this.get('throttleTime'));
+      run.throttle(this, () => this.onScroll(event, $document), this.get('throttleTime'));
     });
   },
   
-  onScroll(event, $body){
+  onScroll(event, $document){
     if(!this.get('isDestroyed')){
 
-    let newScrollTop = $body.scrollTop();
+    let newScrollTop = $document.scrollTop();
     if(newScrollTop > this.get('bodyScrollTop')){
       this.hideMenu(newScrollTop);
     } else {
