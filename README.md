@@ -19,7 +19,7 @@ ember install ember-hiding-menu
 ## 3) Use it
 
 ```hbs
-{{#hiding-menu throttleTime=200 topTolerance=50 class="my-menu"}}
+{{#hiding-menu throttleTime=200 topTolerance=50 bottomTolerance=20 class="my-menu"}}
   {{link-to "somewhere"}}
 {{/hiding-menu}}
 

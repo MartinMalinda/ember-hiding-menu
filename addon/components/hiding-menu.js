@@ -11,9 +11,12 @@ export default Ember.Component.extend({
   throttleTime: 200,
   tolerance: 0,
   topTolerance: 50,
+  bottomTolerance: 20,
   class: null,
+  style: null,
 
   classNameBindings: ['isHidden:hidden','class'],
+  attributeBindings: ['style'],
 
   didInsertElement(){
     this.setupScrollMenuToggle();
@@ -27,7 +30,10 @@ export default Ember.Component.extend({
     let $document = $(document);
     let $el = $(this.element);
     let $menu = $el;
+
     this.set('menuHeight', $menu.outerHeight());
+    this.set('documentHeight', $document.height());
+    this.set('windowHeight', $(window).height());
 
     $(window).on(`scroll.${this.get('elementId')}`, event => {
       run.throttle(this, () => this.onScroll(event, $document), this.get('throttleTime'));
@@ -49,9 +55,15 @@ export default Ember.Component.extend({
   },
 
   hideMenu(newScrollTop){
-    if(!this.get('isHidden') && newScrollTop > this.get('menuHeight') + this.get('topTolerance')){
-        this.set('isHidden', true);
+    // check for Top Tollerance
+    if(newScrollTop > (this.get('documentHeight') - this.get('windowHeight') - this.get('bottomTolerance') - this.get('menuHeight'))){
+      this.set('isHidden', false);
+    } else if(!this.get('isHidden') && newScrollTop > this.get('menuHeight') + this.get('topTolerance')){
+      this.set('isHidden', true);
+    } else {
+      console.log(newScrollTop);
     }
+
   },
 
   showMenu(){
