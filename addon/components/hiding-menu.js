@@ -32,8 +32,6 @@ export default Ember.Component.extend({
     let $menu = $el;
 
     this.set('menuHeight', $menu.outerHeight());
-    this.set('documentHeight', $document.height());
-    this.set('windowHeight', $(window).height());
 
     $(window).on(`scroll.${this.get('elementId')}`, event => {
       run.throttle(this, () => this.onScroll(event, $document), this.get('throttleTime'));
@@ -56,12 +54,11 @@ export default Ember.Component.extend({
 
   hideMenu(newScrollTop){
     // check for Top Tollerance
-    if(newScrollTop > (this.get('documentHeight') - this.get('windowHeight') - this.get('bottomTolerance') - this.get('menuHeight'))){
+    if(newScrollTop > (document.body.scrollHeight - window.innerHeight - this.get('bottomTolerance') - this.get('menuHeight'))){
       this.set('isHidden', false);
     } else if(!this.get('isHidden') && newScrollTop > this.get('menuHeight') + this.get('topTolerance')){
       this.set('isHidden', true);
     } else {
-      console.log(newScrollTop);
     }
 
   },
