@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import layout from '../templates/components/hiding-menu';
-const {run, $} = Ember;
+
+const {run, $, computed} = Ember;
 
 export default Ember.Component.extend({
   layout,
@@ -15,16 +16,23 @@ export default Ember.Component.extend({
   class: null,
   style: null,
 
-  classNameBindings: ['isHidden:hidden','class'],
+  classNameBindings: ['isHidden:hidden','class', 'isAbsolutePositioned:absolute'],
   attributeBindings: ['style'],
 
   didInsertElement(){
-    this.setupScrollMenuToggle();
+    if(this.get('hasSupport')){
+      this.setupScrollMenuToggle();
+    }
   },
 
   willDestroyElement(){
     $(window).off(`scroll.${this.get('elementId')}`);
   },
+
+  isAbsolutePositioned: computed.not('hasSupport'),
+  hasSupport: computed(function(){
+     return navigator.userAgent.match(/(iPhone|iPad|Macintosh|Windows NT|Linux)/) && !navigator.userAgent.match(/(Android)/);
+  }), 
 
   setupScrollMenuToggle(){
     let $document = $(document);

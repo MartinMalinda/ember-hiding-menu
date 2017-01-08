@@ -9,12 +9,20 @@
     transform: translateY(-100%);
   }
 
+  &.absolute {
+    position: absolute;
+  }
+
   &.bottom {
     top: auto;
     bottom: 0;
 
     &.hidden {
       transform: translateY(100%);
+    }
+
+    &.absolute {
+      position: relative;
     }
   }
 }
