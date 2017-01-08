@@ -11,6 +11,10 @@
 
   &.absolute {
     position: absolute;
+
+    &.hidden {
+      transform: translateY(0);
+    }
   }
 
   &.bottom {
@@ -23,6 +27,10 @@
 
     &.absolute {
       position: relative;
+
+      &.hidden {
+        transform: translateY(0);
+      }
     }
   }
 }
