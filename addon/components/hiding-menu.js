@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import layout from '../templates/components/hiding-menu';
 
-const {run, $, computed} = Ember;
+const {run, computed} = Ember;
 
 export default Ember.Component.extend({
   layout,
@@ -9,7 +9,7 @@ export default Ember.Component.extend({
   tagName: 'nav',
   classNames: ['hiding-menu'],
 
-  throttleTime: 200,
+  throttleTime: 250,
   tolerance: 0,
   topTolerance: 50,
   bottomTolerance: 20,
@@ -20,58 +20,59 @@ export default Ember.Component.extend({
   attributeBindings: ['style'],
 
   didInsertElement(){
-    if(this.get('hasSupport')){
-      this.setupScrollMenuToggle();
-    }
+    this.setupScrollMenuToggle();
   },
 
   willDestroyElement(){
     $(window).off(`scroll.${this.get('elementId')}`);
   },
 
-  isAbsolutePositioned: computed.not('hasSupport'),
-  hasSupport: computed(function(){
-     return navigator.userAgent.match(/(iPhone|iPad|Macintosh|Windows NT|Linux)/) && !navigator.userAgent.match(/(Android)/);
-  }), 
-
   setupScrollMenuToggle(){
-    let $document = $(document);
     let $el = $(this.element);
     let $menu = $el;
 
     this.set('menuHeight', $menu.outerHeight());
 
     $(window).on(`scroll.${this.get('elementId')}`, event => {
-      run.throttle(this, () => this.onScroll(event, $document), this.get('throttleTime'));
+      this.raf(() => {
+        run.throttle(this, () => this.onScroll(event), this.get('throttleTime'));
+      });
     });
   },
+
+  raf(cb){
+    let fn = window.requestAnimationFrame || window.setTimeout;
+    fn(cb);
+  }, 
   
   onScroll(event, $document){
     if(!this.get('isDestroyed')){
+      let newScrollTop = $('html').scrollTop() || $('body').scrollTop();
+      if(newScrollTop > this.get('bodyScrollTop')){
+        this.hideMenu(newScrollTop);
+      } else {
+        this.showMenu();
+      }
 
-    let newScrollTop = $document.scrollTop();
-    if(newScrollTop > this.get('bodyScrollTop')){
-      this.hideMenu(newScrollTop);
-    } else {
-      this.showMenu();
-    }
-
-    this.set('bodyScrollTop', newScrollTop);
+      this.set('bodyScrollTop', newScrollTop);
     }
   },
 
   hideMenu(newScrollTop){
     // check for Top Tollerance
-    if(newScrollTop > (document.body.scrollHeight - window.innerHeight - this.get('bottomTolerance') - this.get('menuHeight'))){
-      this.set('isHidden', false);
-    } else if(!this.get('isHidden') && newScrollTop > this.get('menuHeight') + this.get('topTolerance')){
-      this.set('isHidden', true);
-    } else {
-    }
+    this.raf(() => { 
+      if(newScrollTop > (document.body.scrollHeight - window.innerHeight - this.get('bottomTolerance') - this.get('menuHeight'))){
+          this.set('isHidden', false);
+      } else if(!this.get('isHidden') && newScrollTop > this.get('menuHeight') + this.get('topTolerance')){
+          this.set('isHidden', true);
+      }
+    });
 
   },
 
   showMenu(){
+    this.raf(() => {
       this.set('isHidden', false);
+    });
   },
 });
