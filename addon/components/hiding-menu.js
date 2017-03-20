@@ -16,7 +16,7 @@ export default Ember.Component.extend({
   class: null,
   style: null,
 
-  classNameBindings: ['isHidden:hidden','class', 'isAbsolutePositioned:absolute'],
+  classNameBindings: ['isHidden:hidden'],
   attributeBindings: ['style'],
 
   didInsertElement(){
