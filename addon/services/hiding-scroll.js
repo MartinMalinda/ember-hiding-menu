@@ -8,7 +8,8 @@ export default Ember.Service.extend(Ember.Evented, {
     this._super(...arguments);
     $(window).on('scroll.hiding-menu', () => {
       this.trigger('scroll');
-      run.throttle(this, this._onScroll, 150);
+      // run.throttle(this, this._onScroll, 20);
+      this._onScroll();
     });
   },
 
