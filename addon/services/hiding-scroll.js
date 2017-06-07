@@ -3,7 +3,7 @@ import Ember from 'ember';
 const {$, run} = Ember;
 
 export default Ember.Service.extend(Ember.Evented, {
-  
+
   init(){
     this._super(...arguments);
     $(window).on('scroll.hiding-menu', () => {
