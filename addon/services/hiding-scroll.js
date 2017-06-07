@@ -1,11 +1,14 @@
 import Ember from 'ember';
 
+const {$, run} = Ember;
+
 export default Ember.Service.extend(Ember.Evented, {
+  
   init(){
     this._super(...arguments);
-    Ember.$(window).on('scroll.hiding-menu', e => {
+    $(window).on('scroll.hiding-menu', () => {
       this.trigger('scroll');
-      Ember.run.throttle(this, this._onScroll, 150);
+      run.throttle(this, this._onScroll, 150);
     });
   },
 
@@ -22,6 +25,6 @@ export default Ember.Service.extend(Ember.Evented, {
 
   destroy() {
     this._super(...arguments);
-    Ember.$(window).off('scroll.hiding-menu');
+    $(window).off('scroll.hiding-menu');
   },
 });

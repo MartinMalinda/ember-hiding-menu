@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import layout from '../templates/components/hiding-menu';
 
-const {run, computed, inject} = Ember;
+const {run, inject, $} = Ember;
 
 export default Ember.Component.extend({
   layout,
@@ -37,12 +37,12 @@ export default Ember.Component.extend({
     this.set('_menuHeight', this.get('menuHeight') || $menu.outerHeight());
 
     if(this.get('throttleTime') === parseInt(150)){
-      hidingScroll.on('scrollingUp', newScrollTop => this.raf(() => this.showMenu()));
+      hidingScroll.on('scrollingUp', () => this.raf(() => this.showMenu()));
       hidingScroll.on('scrollingDown', newScrollTop => this.raf(() => this.hideMenu(newScrollTop)));
     } else {
-      hidingScroll.on('scroll', event => {
+      hidingScroll.on('scroll', () => {
         this.raf(() => {
-          run.throttle(this, () => this.onScroll(event), this.get('throttleTime'));
+          run.throttle(this, () => this.onScroll(), this.get('throttleTime'));
         });
       });
     }
@@ -54,7 +54,7 @@ export default Ember.Component.extend({
     fn(cb);
   }, 
   
-  onScroll(event){
+  onScroll(){
     if(!this.get('isDestroyed')){
       let newScrollTop = $('html').scrollTop() || $('body').scrollTop();
       if(newScrollTop > this.get('bodyScrollTop')){
