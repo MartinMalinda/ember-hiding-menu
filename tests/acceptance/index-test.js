@@ -1,47 +1,28 @@
 import { test } from 'qunit';
 import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
+import animateScroll from '../../tests/helpers/animate-scroll';
 
 moduleForAcceptance('Acceptance | index');
 
-test('test hiding', function(assert) {
-  visit('/');
-
-  andThen(function() {
-
-    let $menu = $('.hiding-menu');
-    // sunday evening callback hell
-    // TODO: refactor this if needed
-
-    assert.equal($menu.hasClass('hidden'), false, 'menu is visible upon visit');
-
-    return animateScroll(300).then(() => {
-
-      assert.equal($menu.hasClass('hidden'), true, 'menu is hidden after scrolling down significantly');
-    });
+test('test hiding', async function(assert) {
+  
+  await visit('/');
 
 
-  });
+  let $topMenu = $('.hiding-menu.top');
+  assert.equal($topMenu.hasClass('hidden'), false, 'menu is visible upon visit');
 
-  andThen(function(){
+  await animateScroll(300);
 
-    let $menu = $('.hiding-menu');
+  assert.equal($menu.hasClass('hidden'), true, 'menu is hidden after scrolling down significantly');
 
-    animateScroll(0);
-    andThen(function(){
-      return animateScroll(40).then(() => {
-        assert.equal($menu.hasClass('hidden'), false);  
-      });
+  await animateScroll(0);
+  await animateScroll(40);
 
-    });
-  });
+  assert.equal($menu.hasClass('hidden'), false); 
+   
+  await animateScroll(200);
 
-  andThen(function(){
-    return animateScroll(200);
-  });
-
-  andThen(function(){
-      let $menu = $('.hiding-menu');
-        assert.equal($menu.hasClass('hidden'), true);  
-  });
+  assert.equal($menu.hasClass('hidden'), true);  
 
 });

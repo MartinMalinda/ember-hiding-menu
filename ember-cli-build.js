@@ -7,6 +7,10 @@ module.exports = function(defaults) {
     // Add options here
     vendorFiles: {
       // 'jquery.js': null
+    },
+
+    babel: {
+      includePolyfill: true
     }
   });
 
