@@ -1,21 +1,23 @@
 import Ember from 'ember';
 
-const {$, run} = Ember;
+const { $, run } = Ember;
 
 export default Ember.Service.extend(Ember.Evented, {
 
-  init(){
+  init() {
     this._super(...arguments);
-    $(window).on('scroll.hiding-menu', () => {
-      this.trigger('scroll');
-      // run.throttle(this, this._onScroll, 20);
-      this._onScroll();
-    });
+    if (typeof FastBoot === 'undefined') {
+      $(window).on('scroll.hiding-menu', run.bind(this, function() {
+        this.trigger('scroll');
+        // run.throttle(this, this._onScroll, 20);
+        this._onScroll();
+      }));
+    }
   },
 
-  _onScroll(){
+  _onScroll() {
     let newScrollTop = $('html').scrollTop() || $('body').scrollTop();
-    if(newScrollTop > this.get('bodyScrollTop')){
+    if (newScrollTop > this.get('bodyScrollTop')) {
       this.trigger('scrollingDown', newScrollTop);
     } else {
       this.trigger('scrollingUp', newScrollTop);
@@ -26,6 +28,8 @@ export default Ember.Service.extend(Ember.Evented, {
 
   destroy() {
     this._super(...arguments);
-    $(window).off('scroll.hiding-menu');
+    if (typeof FastBoot === 'undefined') {
+      $(window).off('scroll.hiding-menu');
+    }
   },
 });
