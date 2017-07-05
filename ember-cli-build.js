@@ -6,7 +6,7 @@ module.exports = function(defaults) {
   var app = new EmberAddon(defaults, {
     // Add options here
     vendorFiles: {
-      'jquery.js': null
+      // 'jquery.js': null
     }
   });
 
