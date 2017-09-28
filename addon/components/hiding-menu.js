@@ -37,11 +37,15 @@ export default Ember.Component.extend({
   },
 
   onScrollUp() {
-    this.raf(() => this.showMenu());
+    if (!this.get('isDestroyed')) {
+      this.raf(() => this.showMenu());
+    }
   },
 
   onScrollDown(newScrollTop) {
-    this.raf(() => this.hideMenu(newScrollTop));
+    if (!this.get('isDestroyed')) {
+      this.raf(() => this.hideMenu(newScrollTop));
+    }
   },
 
   setMenuHeight() {

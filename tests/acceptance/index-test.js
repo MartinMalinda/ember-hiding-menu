@@ -13,19 +13,18 @@ test('test hiding', async function(assert) {
   await visit('/');
 
   let topMenuEl = document.querySelector('.hiding-menu.top');
-  assert.equal(hasClass(topMenuEl, 'hidden'), false, 'menu is visible upon visit');
+  assert.notOk(hasClass(topMenuEl, 'hidden'), 'menu is visible upon visit');
 
   await animateScroll(300);
 
-  assert.equal(hasClass(topMenuEl, 'hidden'), true, 'menu is hidden after scrolling down significantly');
+  assert.ok(hasClass(topMenuEl, 'hidden'), 'menu is hidden after scrolling down significantly');
 
   await animateScroll(0);
   await animateScroll(40);
 
-  assert.equal(hasClass(topMenuEl, 'hidden'), false); 
+  assert.notOk(hasClass(topMenuEl, 'hidden')); 
    
   await animateScroll(200);
 
-  assert.equal(hasClass(topMenuEl, 'hidden'), true);  
-
+  assert.ok(hasClass(topMenuEl, 'hidden'));  
 });

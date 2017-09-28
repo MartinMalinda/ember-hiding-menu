@@ -42,14 +42,16 @@ export default Ember.Service.extend(Ember.Evented, {
   },
 
   _onScroll() {
-    let newScrollTop = this.getScrollTop();
-    if (newScrollTop > this.get('previousScrollTop')) {
-      this.trigger('scrollingDown', newScrollTop);
-    } else {
-      this.trigger('scrollingUp', newScrollTop);
-    }
+    if (!this.get('isDestroyed')) {
+      let newScrollTop = this.getScrollTop();
+      if (newScrollTop > this.get('previousScrollTop')) {
+        this.trigger('scrollingDown', newScrollTop);
+      } else {
+        this.trigger('scrollingUp', newScrollTop);
+      }
 
-    this.set('previousScrollTop', newScrollTop);
+      this.set('previousScrollTop', newScrollTop);
+    }
   },
 
   destroy() {
