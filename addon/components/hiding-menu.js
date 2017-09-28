@@ -1,10 +1,12 @@
 import Ember from 'ember';
 import layout from '../templates/components/hiding-menu';
 
-const { run, inject, $ } = Ember;
+const { run, inject } = Ember;
 
 export default Ember.Component.extend({
   layout,
+
+  hidingScroll: inject.service(),
 
   tagName: 'nav',
   classNames: ['hiding-menu'],
@@ -19,10 +21,13 @@ export default Ember.Component.extend({
   classNameBindings: ['isHidden:hidden'],
   attributeBindings: ['style'],
 
-  hidingScroll: inject.service(),
 
   didInsertElement() {
-    this.setupScrollMenuToggle();
+    this.setMenuHeight();
+    this.setupScrollEventHandling();
+
+    this.bodyElement = this.get('hidingScroll.bodyElement');
+    this.configScrollContainerElement = this.get('hidingScroll.configScrollContainerElement');
   },
 
   willDestroyElement() {
@@ -39,50 +44,37 @@ export default Ember.Component.extend({
     this.raf(() => this.hideMenu(newScrollTop));
   },
 
-  setupScrollMenuToggle(){
-    let $menu = this.$();
-    let hidingScroll = this.get('hidingScroll');
-
-    this.set('_menuHeight', this.get('menuHeight') || $menu.outerHeight());
-
-    if (parseInt(this.get('throttleTime')) === 150) {
-      hidingScroll.on('scrollingUp', this, this.onScrollUp);
-      hidingScroll.on('scrollingDown', this, this.onScrollDown);
-    } else {
-      hidingScroll.on('scroll', () => {
-        this.raf(() => {
-          run.throttle(this, this.onScroll, this.get('throttleTime'));
-        });
-      });
+  setMenuHeight() {
+    if (!this.get('menuHeight')) {
+      // if menuHeight is not passed from the outside
+      this.set('menuHeight', this.element.offsetHeight || this.element.clientHeight);
     }
   },
 
+  setupScrollEventHandling(){
+    const hidingScroll = this.get('hidingScroll');
+    hidingScroll.on('scrollingUp', this, () => run.throttle(this, this.onScrollUp, this.get('throttleTime')));
+    hidingScroll.on('scrollingDown', this, newScrollTop => run.throttle(this, this.onScrollDown, [newScrollTop], this.get('throttleTime')));
+  },
+
   raf(cb){
-    if (window.requestAnimationFrame) {
+    if ('requestAnimationFrame' in window) {
       window.requestAnimationFrame(run.bind(this, cb));
     } else {
       run.next(this, cb);
     }
   },
 
-  onScroll(){
-    if (!this.get('isDestroyed')) {
-      let newScrollTop = $('html').scrollTop() || $('body').scrollTop();
-      if (newScrollTop > this.get('bodyScrollTop')) {
-        this.onScrollDown(newScrollTop);
-      } else {
-        this.onScrollUp();
-      }
-
-      this.set('bodyScrollTop', newScrollTop);
-    }
+  getFixedScrollHeight() {
+    const containerElement = this.configScrollContainerElement || this.bodyElement;
+    return containerElement.scrollHeight - window.innerHeight;
   },
 
   hideMenu(newScrollTop){
     // check for Top Tollerance
-    if (newScrollTop > (document.body.scrollHeight - window.innerHeight - this.get('bottomTolerance') - this.get('_menuHeight'))) {
+    if (newScrollTop > (this.getFixedScrollHeight() - this.get('bottomTolerance') - this.get('menuHeight'))) {
       this.set('isHidden', false);
-    } else if (!this.get('isHidden') && newScrollTop > this.get('_menuHeight') + this.get('topTolerance')) {
+    } else if (!this.get('isHidden') && newScrollTop > this.get('menuHeight') + this.get('topTolerance')) {
       this.set('isHidden', true);
     }
   },
