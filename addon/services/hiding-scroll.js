@@ -16,7 +16,7 @@ export default Ember.Service.extend(Ember.Evented, {
     const scrollEventElement = this.configScrollContainerElement || window;
     //TODO passive true?
     this._scrollListener = this._scrollListener.bind(this);
-    scrollEventElement.addEventListener('scroll', this._scrollListener);
+    scrollEventElement.addEventListener('scroll', this._scrollListener, { passive: true });
   },
 
   _scrollListener() {

@@ -11,10 +11,10 @@ export default Ember.Component.extend({
   tagName: 'nav',
   classNames: ['hiding-menu'],
 
-  throttleTime: 150,
+  throttleTime: 30,
   tolerance: 0,
   topTolerance: 50,
-  bottomTolerance: 20,
+  bottomTolerance: 50,
   class: null,
   style: null,
 
@@ -58,7 +58,7 @@ export default Ember.Component.extend({
   setupScrollEventHandling(){
     const hidingScroll = this.get('hidingScroll');
     hidingScroll.on('scrollingUp', this, () => run.throttle(this, this.onScrollUp, this.get('throttleTime')));
-    hidingScroll.on('scrollingDown', this, newScrollTop => run.throttle(this, this.onScrollDown, [newScrollTop], this.get('throttleTime')));
+    hidingScroll.on('scrollingDown', this, newScrollTop => run.throttle(this, this.onScrollDown, newScrollTop, this.get('throttleTime')));
   },
 
   raf(cb){
