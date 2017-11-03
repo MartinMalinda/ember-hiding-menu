@@ -1,6 +1,6 @@
 {
   "name": "ember-hiding-menu",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Ember addon which adds functionality to toggle class on scroll down",
   "directories": {
     "doc": "doc",
