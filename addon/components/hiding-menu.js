@@ -32,8 +32,8 @@ export default Ember.Component.extend({
 
   willDestroyElement() {
     let hidingScroll = this.get('hidingScroll');
-    hidingScroll.off('scrollingUp', this, this.onScrollUp);
-    hidingScroll.off('scrollingDown', this, this.onScrollDown);
+    hidingScroll.off('scrollingUp', this, this._onScrollUp);
+    hidingScroll.off('scrollingDown', this, this._onScrollDown);
   },
 
   onScrollUp() {
@@ -61,8 +61,10 @@ export default Ember.Component.extend({
 
   setupScrollEventHandling(){
     const hidingScroll = this.get('hidingScroll');
-    hidingScroll.on('scrollingUp', this, () => run.throttle(this, this.onScrollUp, this.get('throttleTime')));
-    hidingScroll.on('scrollingDown', this, newScrollTop => run.throttle(this, this.onScrollDown, newScrollTop, this.get('throttleTime')));
+    this._onScrollUp = () => run.throttle(this, this.onScrollUp, this.get('throttleTime'));
+    this._onScrollDown = newScrollTop => run.throttle(this, this.onScrollDown, newScrollTop, this.get('throttleTime'));
+    hidingScroll.on('scrollingUp', this, this._onScrollUp);
+    hidingScroll.on('scrollingDown', this, this._onScrollDown);
   },
 
   raf(cb){
